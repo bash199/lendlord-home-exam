@@ -30,6 +30,18 @@ if (runMode === "app") {
       })
    );
 
+   server.use(async (ctx, next) => {
+      ctx.set("Access-Control-Allow-Origin", "http://localhost:3001");
+      ctx.set("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+      ctx.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      ctx.set("Access-Control-Allow-Credentials", "true");
+      if (ctx.method === "OPTIONS") {
+         ctx.status = 204; // No Content
+      } else {
+         await next();
+      }
+   });
+
    server.use(
       koaCors({
          methods: "POST, GET, PUT, DELETE, OPTIONS",
