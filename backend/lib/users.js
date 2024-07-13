@@ -24,6 +24,11 @@ class Users {
       const newUser = await this.repo.createNewUser(userData);
       return newUser;
    }
+
+   async deleteUser(query) {
+      const deletedUser = await this.repo.deleteUser(query);
+      return deletedUser;
+   }
 }
 
 module.exports = Users;

@@ -24,8 +24,8 @@ exports.getUserById = async (ctx) => {
  */
 exports.getAllUsers = async (ctx) => {
    try {
-      console.log(2);
-      const user = await users.findAllUsers();
+      const filter = ctx.query;
+      const user = await users.findAllUsers(filter);
 
       ctx.status = 200;
       ctx.body = user;
@@ -40,8 +40,9 @@ exports.getAllUsers = async (ctx) => {
  */
 exports.updateUser = async (ctx) => {
    try {
-      const { id, updated } = ctx.request.body;
-      const user = await users.findUserAndUpdate({ _id: new ObjectId(id) }, updated);
+      const { id } = ctx.params;
+      const toUpdate = ctx.request.body;
+      const user = await users.findUserAndUpdate({ _id: new ObjectId(id) }, toUpdate);
 
       ctx.status = 200;
       ctx.body = user;
@@ -61,6 +62,41 @@ exports.createNewUser = async (ctx) => {
 
       ctx.status = 201;
       ctx.body = newUser;
+   } catch (err) {
+      ctx.status = err.status || 500;
+      ctx.message = err.message || "Internal server error";
+   }
+};
+
+/**
+ * Deletes a user
+ */
+exports.deleteUser = async (ctx) => {
+   try {
+      const { id } = ctx.params;
+      const deletedUser = await users.deleteUser({ _id: new ObjectId(id) });
+
+      ctx.status = 200;
+      ctx.body = deletedUser;
+   } catch (err) {
+      ctx.status = err.status || 500;
+      ctx.message = err.message || "Internal server error";
+   }
+};
+
+/**
+ * Gets a manager with employees
+ */
+exports.getManagerAndEmployees = async (ctx) => {
+   try {
+      const { id } = ctx.params;
+      const manager = await users.findUser({ _id: new ObjectId(id) });
+      const { employees } = manager;
+      const emps = await users.findAllUsers({ _id: { $in: employees } });
+      manager.set("employees", emps);
+
+      ctx.status = 200;
+      ctx.body = manager;
    } catch (err) {
       ctx.status = err.status || 500;
       ctx.message = err.message || "Internal server error";

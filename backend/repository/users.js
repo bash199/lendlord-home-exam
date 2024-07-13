@@ -20,6 +20,11 @@ class Users {
       const newUser = await usersModel.create(user);
       return newUser;
    }
+
+   async deleteUser(query) {
+      const deletedUser = await usersModel.findOneAndDelete(query);
+      return deletedUser;
+   }
 }
 
 module.exports = Users;
