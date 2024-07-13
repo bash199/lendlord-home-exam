@@ -6,6 +6,7 @@ const ctrl = require("../controllers/users");
 router.get("/user/:id", ctrl.getUserById);
 router.get("/users", ctrl.getAllUsers);
 router.put("/updateUser", ctrl.updateUser);
+router.post("/new", ctrl.createNewUser);
 
 router.allowedMethods();
 

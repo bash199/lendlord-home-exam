@@ -15,6 +15,11 @@ class Users {
       const updatedUser = await usersModel.findOneAndUpdate(query, update, { new: true });
       return updatedUser;
    }
+
+   async createNewUser(user) {
+      const newUser = await usersModel.create(user);
+      return newUser;
+   }
 }
 
 module.exports = Users;

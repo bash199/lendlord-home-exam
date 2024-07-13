@@ -51,6 +51,22 @@ exports.updateUser = async (ctx) => {
    }
 };
 
+/**
+ * Creates a new user
+ */
+exports.createNewUser = async (ctx) => {
+   try {
+      const userData = ctx.request.body;
+      const newUser = await users.createNewUser(userData);
+
+      ctx.status = 201;
+      ctx.body = newUser;
+   } catch (err) {
+      ctx.status = err.status || 500;
+      ctx.message = err.message || "Internal server error";
+   }
+};
+
 async function initialize() {
    await users.initialize();
 }

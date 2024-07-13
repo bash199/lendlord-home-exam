@@ -19,6 +19,11 @@ class Users {
       const updatedUser = await this.repo.findUserAndUpdate(query, update);
       return updatedUser;
    }
+
+   async createNewUser(userData) {
+      const newUser = await this.repo.createNewUser(userData);
+      return newUser;
+   }
 }
 
 module.exports = Users;
